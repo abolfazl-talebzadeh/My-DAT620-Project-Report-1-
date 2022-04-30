@@ -1,0 +1,51 @@
+In this section we try to expand the use case and define the existing data-set and go deeper in each field and then some tasks from which we will get a business intelligence insight will be explained and finally, the performance assessment which is separately done on multiple algorithms and also on different frameworks (e.g., Hadoop, Spark) will be discussed. 
+
+\subsection{DATA-SET}
+The selected data-set is more than 130 million Amazon customers reviews on roughly 35 Amazon product categories which is gathered from 1996 – 2015. It consists 15 fields:
+\begin{itemize}
+    \item marketplace: This fields expresses the country in which the item is sold and in this data-set it is \emph{US} for all fields
+    \item review\textunderscore id: This field is the ID each review is referred to 
+    \item product\textunderscore title: This field contains the title given to each product
+    \item product\textunderscore category: Each product is placed under one of 35 existing product categories this field specifies this category.
+    \item star\textunderscore rating: Each customer can rate product along with the comment that makes
+    \item total\textunderscore vote: 
+    \item vine: Review was written as part of the Vine program
+    \item helpful\textunderscore votes: Each customer can vote for other reviews if they are helpful. This field is accumulation of the helpful votes each review has received.
+    \item verified\textunderscore purchase: This fields tells if the review has been made by a verified purchase. Unquestionably, a review from a verified purchase is considered more valid. 
+    \item review\textunderscore headline: Each review has a title chosen by the customer. This field expresses the tile for each review.
+    \item review\textunderscore body: This field contains the body of the review
+    \item review\textunderscore date: This is the date on which the review has been made
+\end{itemize}
+
+\subsection{BI RELATED WORKS}
+To extract the proper BI strategies and analysis of the existing data, several queries has been implemented using MrJob in Hadoop and Spark. Below you can see a brief explanation for each procedure. We will go through the detail in other sections.
+
+\subsubsection{Number of Reviews Each Year}
+
+In this section the number of reviews made each year is counted by implementing a simple map-reduce algorithm in Hadoop. the result is saved in an output file in tab separated text-file. this result can be used to compare the amount of customers' attention to the products each for each year and get the correct perspective of the direction  the business is heading to.
+
+\subsubsection{Number of Reviews Each Customer Has Made}
+
+The result of this implementation can give the business a general idea of the activity of each customer. By using the result of this part the activity of each customer can be observed so that the customers can be classified into groups by the amount of activity. this can be used for targeted reviewer incentive plans and promotions.
+
+\subsubsection{Number of Reviews for Each Month}
+
+This is the same as number of reviews made each year with the difference that it has been made for each month and the result is much detailed. it can also be used to get some ideas about the different months of the year. for example, how the season and occasions like Christmas and summertime can effect on the number of reviews made by users.
+\subsubsection{Number of Reviews for Each Product}
+This section will provide the number of reviews each product has received. This can be used to learn which products has gathered more attention which can be used to find the most praised and criticised product by combining with the results from sentiment analysis. 
+\subsubsection{Average Number of Reviews per Month During Each Year Also Max and Min Number of Reviews Received per Month During Each Year}
+This section calculates the average of the number of reviews made per month during each year. It also calculates the the month with the maximum and the minimum value related to each year. Result of this section prepares the idea on how much reviews has been made averagely during each year. Besides, by knowing the months with the maximum and minimum number of reviews, thee most and the least busiest month of the year is known and can be used to imply some policies to fix any issues or bottlenecks causing recession in a period of time.
+
+\subsubsection{The Months of Each Year with the Most and the Least Reviews}
+This gives us the month of the year with maximum and minimum number of the reviews for each month. by knowing the months with the maximum and minimum number of reviews, the most and the least busy month of the year is known and can be used to imply some policies to fix any issues or bottlenecks causing recession in a period of time.
+\subsubsection{The average starts given to each product by the reviewers}
+The idea of the customer about the product is so valuable as it gives the feedback to the business about the performance of the business in different categories by assessing the degree of satisfactory of the customers. The average stars given to a product is a brilliant tool to comprehend how successful a product has been in the market to gather the attention and satisfactory of the buyers so that the company can pursue the right decision on the policies towards a particular product or even a product category. 
+
+\subsection{Sentiment Analysis}
+Computational intelligence technologies are proven to be essential competitive tools in many sectors as analytic and data science become more prevalent.
+For example, data is mined for trends in business analytic to better understand consumers and improve sales and marketing. Probabilistic approaches may be used to detect patterns in data using computational intelligence technologies. These approaches usually operate with low-level data and aren't governed by absolute knowledge like standard AI methods. Furthermore, a significant quantity of data that requires analysis is now generated in textual form. Users might, for example, submit written reviews of a product or service on websites like Amazon and Airbnb. It's difficult to express data in an absolute grammar since written word is open to interpretation. Computational intelligence approaches, on the other hand, allow for such fuzziness and may be the best tool for detecting patterns in such data.
+
+Sentiment analysis integrates multiple research fields such as natural language processing, data mining, and text mining, and is quickly gaining traction between many businesses as they pursue to integrate computational intelligence methods into their operations and shed more light on, and improve, their products and services. The purpose of sentiment analysis, often known as opinion mining, is to uncover people's written views. "What one feels about something," "personal experience, one's own emotion," "an attitude toward something," or "an opinion" all seem to be terms used to describe sentiment.
+
+Beliefs are at the heart of essentially all human behavior and have a significant role in shaping our actions. Our views and interpretations, as well as the decisions we make, are heavily influenced by how society sees and interpret the world. As a result, when we need to make a decision, we frequently follow the opinion of others.
+This is true not just for people but also for businesses. Closed-form client satisfaction surveys have traditionally been enough to determine the most important components, or features, of total customer satisfaction. Questionnaire development and implementation, on the other hand, might be costly or unavailable. In certain circumstances, governmental entities are even forbidden by law from collecting customer satisfaction surveys.
