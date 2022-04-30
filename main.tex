@@ -7,12 +7,42 @@
 % it was edited by Leander Jehl and Hein Meling
 \documentclass[sigconf]{acmart}
 
+\usepackage{listings}
+
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{1,1,1}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+
 \input{dat620-setup}
 
 %In the preamble file you can include packages and define macros.
 \input{preamble}
 
 \begin{document}
+
+
 %TODO: Replace the title with your project title.
 \title{Amazon Customer Reviews}
 %you may use a subtitle
@@ -48,13 +78,21 @@
 \label{sec:background}
 \input{tex/background}
 
-\section{Your Method}
-\label{sec:method}
-\input{tex/method}
-
 \section{Experimental Evaluation}
 \label{sec:evaluation}
 \input{tex/evaluation}
+
+\section{Related Works}
+\label{sec:relatedWorks}
+\input{tex/related}
+
+\section{Identify Preprocessing Steps}
+\label{sec:preprocessing}
+\input{tex/preprocessing}
+
+\section{Related Algorithms}
+\label{sec:relatedAlgorithms}
+\input{tex/relatedAlgorithms}
 
 \section{Conclusion}
 \label {sec:conclusion}
@@ -74,6 +112,6 @@
 \input{tex/further}
 
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-bibliography}
+\bibliography{1.bib}
 
 \end{document}

@@ -1,26 +1,28 @@
-Here you evaluate your work using experiments. You start
-again with a very short summary of the section. The typical
-structure follows.
+For implementing the algorithms on big data using Hadoop and Spark, a platform was prepared which could have a deliberate setup of multiple cluster~(namenodes and worker nodes) setups containing different hardware and software resources. This could prepare a very acceptable possibility of performing performance assessment practice on different algorithms using different cluster setup. Spark and Hadoop's performance is determined by a number of parameters, including hard disk (I/O storage), CPU, memory, network bandwidth, and other software layers that are well-configured. Building a Hadoop cluster is a difficult operation that involves careful consideration of various issues, including hardware selection, cluster sizing, and configuration[hadoop cluster].
+
+\begin{figure}[t]
+   \centering
+   \includegraphics[width=\linewidth]{fig/hadoop_cluster.png}
+    \caption{Apache Hadoop Architecture}
+    \label{fig:architecture}
+\end{figure}
+
 
 \subsection{Experimental setup}
-Specify the context and setup of your experiments. This includes e.g.~what hardware (VMs) you are running on, what operating system these machines are running, how they are connected, ...
+For this project we decided to use two different experimental setups. The primary setup contain total number of 4 nodes including one main Node and 3 data Node. The main node is named "group2" and words has been name "datanode" plus the consequent worker node order number (e.g., datanode1). All nodes had similar resources setup configuration as you can see in figure 2, there is 200~GB of HDD, 4~GB of RAM and two virtual CPU. Linux Ubuntu Forcal version 20.4 has been installed on all nodes as the operating system and Hadoop and Spark are each individually installed and configured on all nodes.
+A secondary cluster configuration has also been considered which contains the same node configuration, but the total number of nodes has increased to 7 nodes including one main node and 5 worker nodes using the same naming policy.
 
-Also explain how you generate load for your system and what parameters you used here. The general idea is to include enough information for others to reproduce your experiments. To that end, you should provide a detailed set of instructions for repeating your experiments. These instructions should not be included in the report, but should be provided as part of the source code repository on GitHub, typically as the \texttt{README.md} file, or as Shell scripts or Ansible scripts.
 
-If your experiments give strange or unexpected results, analyze, profile and debug your code. \textbf{Do not simply re-run experiments until they give the expected results.}
+The virtual network of the experimental setup is consisted of two networks. First one, public network and the second one group2 network which are connected together through a router.You can see the topology graph of the secondary cluster setup network on Figure~\ref{fig:topology}
 
-Finally, running experiments is very time consuming and you may need to go through multiple rounds of experiment, debugging and optimization. \textbf{Do not delay running experiments until the end of your project period.} 
+\begin{figure}[t]
+   \centering
+   \includegraphics[width=\linewidth]{fig/NetworkTopology.png}
+    \caption{Experimental Secondary Network Topology}
+    \label{fig:topology}
+\end{figure}
 
-\subsection{Results}
-The results of your experiments. Compare different variants of your design (e.g.~with and without optimizations) or compare performance to other designs or systems. Plots should show the average over multiple runs (at least 10 as a rule of thumb), including error bars, percentiles or min/max values.
 
-Discuss the plot and extract the overall performance. Do not repeat all numbers in the text, but mention relevant differences in numbers, e.g.~our optimization improves throughput by 26\%.
-Discuss how the results validate or contradict your assumptions.
-
-Perform experiments to evaluate your system under operating normal conditions, when experiencing failures or attacks, or with different workloads.
-
-Figure~\ref{fig:graph} shows a graph generated with \texttt{pgfplots} from 
-experiment data.
 \begin{figure}
 \begin{tikzpicture}
 \begin{axis}[

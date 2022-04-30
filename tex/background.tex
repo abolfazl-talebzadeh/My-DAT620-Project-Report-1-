@@ -17,7 +17,7 @@ The selected data-set is more than 130 million Amazon customers reviews on rough
     \item review\textunderscore date: This is the date on which the review has been made
 \end{itemize}
 
-\subsection{BI RELATED WORKS}
+\subsection{BUSINESS INTELLIGENCE}
 To extract the proper BI strategies and analysis of the existing data, several queries has been implemented using MrJob in Hadoop and Spark. Below you can see a brief explanation for each procedure. We will go through the detail in other sections.
 
 \subsubsection{Number of Reviews Each Year}
@@ -49,3 +49,9 @@ Sentiment analysis integrates multiple research fields such as natural language 
 
 Beliefs are at the heart of essentially all human behavior and have a significant role in shaping our actions. Our views and interpretations, as well as the decisions we make, are heavily influenced by how society sees and interpret the world. As a result, when we need to make a decision, we frequently follow the opinion of others.
 This is true not just for people but also for businesses. Closed-form client satisfaction surveys have traditionally been enough to determine the most important components, or features, of total customer satisfaction. Questionnaire development and implementation, on the other hand, might be costly or unavailable. In certain circumstances, governmental entities are even forbidden by law from collecting customer satisfaction surveys.
+
+Therefore, we decided to use sentiment analysis to attain an insight of reviewers’ behavioral pattern during particular periods of time to figure out how some iconic events which are considered a milestone socially or politically (e.g., US presidential election, September 11, Superbowl matches, most important shooting outs and terrorist attacks) affect their behavior in business platforms like amazon. Sentiment analysis can also be used in multiple applying other business policies. For example, the general impact of the customers on a product line after a determined period of time can be learnt through implementing sentiment analysis on the user reviews on multiple platforms and also social media like twitter and Instagram and even deeper on reviewers’ videos in online video sharing platforms like YouTube. This can be used to decide how to do the product modification to convert a not successful product to a best sellers or which policies to pursue for a good selling product to go even further. 
+
+\subsection{PERFORMANCE ASSESSMENT}
+As far as two data frameworks for handling big data (i.e., Apache Hadoop and Spark) has been chosen to implement all formerly mentioned algorithms. There’s also a good chance to do some comparisons on performance assessment of these two frameworks on different algorithms considering the fact that they use slightly different approaches to solve the big data computation problem. For achieving this, sentiment analysis will be implemented on both Hadoop and Spark using multiple algorithms and methods on different cluster settings to get an insight on which has the best performance and to choose the proper algorithm and method to do the sentiment analysis on a big data with specifications the same of ours.
+

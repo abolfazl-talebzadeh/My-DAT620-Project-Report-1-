@@ -1,0 +1,43 @@
+Data preprocessing, which is part of data preparation, refers to any sort of processing done on raw data in order to prepare it for further processing. It has long been regarded as a crucial first stage in the data mining process. Data preparation approaches have lately been used for training machine learning and AI models, as well as for inferring against them.
+
+Preprocessing data converts it into a format that can be handled more quickly and efficiently in data mining, machine learning, and other data science activities. To achieve reliable findings, the approaches are often utilized at the early phases of the machine learning and AI development pipeline [\ref{item:2}].
+
+As the data that is gathered to process always is not as we anticipate, there are several preprocessing levels that needs to be done on the existing data to convert it to a more convenient form and type. below you can find multiple kinds of data preprocessing:
+\begin{itemize}
+    \item sampling, the process of selecting a representative selection of data from a vast population;
+    \item transformation, which transforms raw data into a single output;
+    \item denoising is the process of removing noise from data.
+    \item imputation, which replaces missing values with statistically relevant data;
+    \item normalization is the process of organizing data so that it may be accessed more quickly;
+    \item feature extraction is the process of extracting a subset of relevant features that are important in a given situation.
+\end{itemize}
+
+As the data type and format is as desired in our case, there is not much necessity for preprocessing. And also as long as we are not going to do any machine learning prediction algorithms the numerical values in the data-set do not require to be watched to avoid unwanted invalid results such as division by zero and etc. On the other side, because we are doing sentiment analysis and the process requires meaningful words which can be assumed as either positive or negative. there are some text cleaning algorithms that can be useful in our case. For example, removing stop words from text can be so helpful in reducing the process time on implementing sentiment analysis. nevertheless, in the case that one of many Natural Language Processing (NLP) and more specifically Sentiment Analysis library is used, applying text cleaning (removing punctuation marks and numbers and emojis, converting to lower case and etc.) is implemented within the library and there is no need for doing any extra layer of cleaning. However, in the case of using non-trivial algorithms, applying multiple layers of text cleansing, to attain a reasonable performance threshold would be inevitable. Hence, in our case, on sentiment analysis implementation using non-trivial algorithm, all the text converted to lower case format and all non alphabetic characters are removed from the review text. This is achieved by using two methods:
+\subsubsection{regEx} A regular expression (abbreviated regex or regexp; sometimes known as a rational expression) is a string of letters that defines a text search pattern. String-searching algorithms often employ such patterns for string "find" or "find and replace" operations, as well as input validation. Theoretical computer science and formal language theory have produced regular expression approaches\cite{statista}.
+\subsubsection{python standard iteration and string commands}
+The changes which is necessary to make the text ready for undergoing an analysis can be implemented using non-trivial algorithms. For example, in python the string can be converted to a list containing all the included letter separately, and using an iterative loop each letter can be checked, in the case that it's not in the intended format in can be excluded from the string by adding it to a new list or removing it from the original list. In code~\ref{lst:code} and code~\ref{lst:regex} you can see how python functions and regEx be utilized to cleanse a string in the proper way respectively.
+
+
+\rule{200 pt}{0.5 pt} 
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={String cleansing using python standard functions}, label={lst:code}, mathescape = true, breaklines=true]
+  #cleansing the string using python standard functions
+  cleanText = ''.join(w.lower() for w in lineList[13] if w.isalpha() or w == " ")
+    textList = cleanText.split(" ")
+    
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt} 
+
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={String cleansing using regEx}, label={lst:regex}, mathescape = true, breaklines=true]
+  #cleansing the string using regEx
+  cleanText = re.sub(r"[0-9(-_:;,.!?@#%^&*)']",'',lineList[13].lower())
+    textList = cleanText.split(" ")
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt} 
+
+
+as the majority of the algorithms, particularly in Hadoop MRJob has been implemented in separate files and each of them uses different removing extra fields couldn't be considered as an option as for each of the algorithms one cleaning algorithm should have been implemented which imposes a very heavy over load to the system. Therefore, we decided to move on with untouched data base for running counting process in Hadoop.
