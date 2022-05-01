@@ -1,5 +1,7 @@
-Basically, in this project multiple algorithms has been used which can be divided into two groups, the first one is the algorithms which has been used to infer some result coherence and logic to make decisions on business related acts and the second one is the algorithms which has been implemented to apply sentiment analysis on customer reviews. the first group are those which has been implemented on Hadoop and consists of 7 algorithms:
-\subsection{Number of Reviews Each Year} this algorithm has been implemented using one mapper and one reducer functions. in the mapper function first, the whole line is read and sent as line into the mapper, the white spaces which is located in the beginning and at the end of the line will be dropped by using strip  python function, the stripped string then is separated and saved as a list; the 14th element of the list which is the date the review is made is selected and again separated into day, month and the year. To figure out that the date is not null or doesn't have an invalid value, within a condition, specifies if the length of separated value is equal to 3 (representing day, month and year), then the values from the first position to position number seven of the original non-separated value (to have year and month together e.g., 2002-12 for December of 2002) for date will be returned as the key and "1" as the value.
+Basically, in this project multiple algorithms has been used which can be divided into two groups, the first one is the algorithms which has been used to infer some results, coherence and logic to make decisions on business related acts and the second one is the algorithms which has been implemented to apply sentiment analysis on customer reviews. the first group are those which has been implemented on Hadoop using MRJob and consists of 7 algorithms, and the second one is the sentiment analysis algorithms which consists of 2 methods, in the first one "textblob" which is a python library has been used to implement the sentiment analysis on reviews and the second one which is non-trivial algorithm is an algorithm uses a sentiment word dictionary to get the sentiment analysis of the text.
+\subsection{Hadoop MRJob algorithms}
+Implementing an algorithm in Hadoop requires segmentation of the algorithms into smaller parts and redesigning it into mapper and reducer functions. This actually is the fact that makes Hadoop more challenging for implementing specifically complex algorithms. As Hadoop runs in a cluster of nodes, and the data is read line by line and delivered to the mappers, the mapper should get the line and do the heavy processing and return the primary results to the reducer. So, the algorithm should be divided into processing part and aggregating part. The processing part is done by the mapper and aggregation is done by the reducer. In further parts different algorithms implemented using MRJob is discussed.
+\subsubsection{Number of Reviews Each Year} this algorithm has been implemented using one mapper and one reducer functions. in the mapper function first, the whole line is read and sent as line into the mapper, the white spaces which is located in the beginning and at the end of the line will be dropped by using strip  python function, the stripped string then is separated and saved as a list; the 14th element of the list which is the date the review is made is selected and again separated into day, month and the year. To figure out that the date is not null or doesn't have an invalid value, within a condition, specifies if the length of separated value is equal to 3 (representing day, month and year), then the values from the first position to position number seven of the original non-separated value (to have year and month together e.g., 2002-12 for December of 2002) for date will be returned as the key and "1" as the value.
 
 In reduce function, the list of values will be added through python function sum and is return as the value along side the key which has remained untouched from the mapper function. In code~\ref{lst:revYearCount} you see the implementation of this algorithm.
 
@@ -33,7 +35,7 @@ if __name__ == '__main__':
 \rule{200 pt}{0.5 pt} 
 
 
-\subsection{Number of Reviews Each Customer Has Made}
+\subsubsection{Number of Reviews Each Customer Has Made}
 The purpose of writing this algorithm has been discussed so in this part we go through the implementation and algorithm. This algorithm has been implemented using one mapper function and one reducer function. the mapper function receives the each line through line argument in the function. The line will then divided into 15 fields and stored in a list. Customer identification number is fetched from the list and stored in a variable and is returned as the key and number "1" is returned as the value to the reducer. in the reducer the unique values for each customer ID is received and the summation of number of "1" values is calculated and return to the output with the key. the code for this algorithm can be found on code~\ref{lst:CostumerCount} 
 
 \rule{200 pt}{0.5 pt} 
@@ -62,7 +64,7 @@ if __name__ == '__main__':
 
 \rule{200 pt}{0.5 pt} 
 
-\subsection{Number of Reviews for Each Month}
+\subsubsection{Number of Reviews for Each Month}
 A mapper functions and reducer functions are included in this algorithm. The mapper function receives the read line as an argument and removes the extra spaces from the head and the tail of the string and divides in into 15 values representing multiple fields. then position 0 to position 7 of the review date fields which contains year and month of the date is returned as the key and a single "1" as the number to be aggregated by the reducer later.
 
 in the reducer, the list of values is aggregated by sum function and get returned with untouched key. you can see the code for implementation of this algorithm at code~r\ref{lst:reviewMonth}
@@ -95,7 +97,7 @@ if __name__ == '__main__':
 
 \rule{200 pt}{0.5 pt} 
 
-\subsection{Number of Reviews for Each Product}
+\subsubsection{Number of Reviews for Each Product}
 The reason for developing this algorithm has already been stated in \ref{sec:background}, therefore we'll move on to the implementation and algorithm in this section. One mapper function and one reducer function were used to implement this technique. Each line is received by the mapper function through the line parameter. After that, the line will be broken down into 15 fields and kept in a list. The product identification number is retrieved from the list, saved in a variable, and returned to the reducer as the key, with the value "1" as the value. The unique values for each product ID are received in the reducer, and the total of the number of "1" values is computed before returning to the output with the key. In code~\ref{lst:reviewsProduct} you can find the corresponding code for this algorithm.
 
 
@@ -127,7 +129,7 @@ if __name__ == '__main__':
 
 \rule{200 pt}{0.5 pt} 
 
-\subsection{Average Number of Reviews per Month During Each Year} 
+\subsubsection{Average Number of Reviews per Month During Each Year} 
 Two mapper functions and two reducer functions are included in this algorithm. A function called steps has been defined at the top of the class. This ensures that many mappers and reducers are performed in the correct order.
 
 The first mapper function, "mapper count," takes the line as a single consistent string comprising 15 numbers that has been joined together with the tab character. The superfluous spaces at the beginning and end of the string will be eliminated using the strip function in the following step. It is then separated into 15 pieces, each of which represents a field's value, and kept in a list.To avoid receiving the header as a line of values, the value is compared to "review date," and the values from the first to the seventh positions of the original non-separated value (to have year and month together, e.g., 2002-12 for December of 2002) for date are returned as the key and "1" as the value. Value null and 0 will be returned if it was equivalent to the relevant header title.
@@ -256,7 +258,7 @@ if __name__ == '__main__':
 
 
 
-\subsection{The average starts given to each product by the reviewers}
+\subsubsection{The average starts given to each product by the reviewers}
 
 This algorithm is also consisted of two mappers and two reducers. in the first mapper like the other ones, the read line in plugged into the function using an argument which is referred to by "line" in the function. after receiving the string the spaces at the head and tail drops and it gets divided into field values. The field which holds the value for star ratings and also the value of title of the product is fetch from the list and stored in variables. After that, a list of this two values get returned as the key and number "1" is returned as the value representing the quantity of the combination. The  code for the first mapper can be found in code~\ref{lst:starMap1}
 
@@ -313,6 +315,125 @@ At the final stage, the collected lists of star ratings and numbers are gathered
             tempStar+=i[0]
             tempNumber+=i[1]
         yield key, tempStar/tempNumber
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+\subsubsection{Sentiment Analysis Using AFIIN word list- non-trivial implementation}
+Normally, as there are lots of ultimately efficient libraries for every programming language to do the sentiment analysis, it is not necessary to write the algorithm from the scratch. nevertheless because the intention of this project is to perform an performance analysis in different platforms, we decided to implement a non-trivial sentiment analysis algorithm.
+
+
+In this algorithm, the goal is to calculate the average of polarity of the reviews for each month. The text first is received by the mapper as is done in other algorithms, the review is retrieved from the string and the excess spaces are removed using strip function. The date containing year and month is also retrieved from the string and saved in date variable. As sentiment analysis algorithms utilize just non-neutral words, normally all punctuation marks, numbers and stop words should be removed from the text. This is done by using a regEx command which removes all non alphabetic characters from the string. The standard algorithms in this stage would tokenize the string which is breaking the sentence into word maps containing the word and the number of its repetition in the text. in code~\ref{lst:tokenizer} you can see a tokenzer written in python.
+in our case what we did is actually dividing the sentence into words and storing it in a python list containing all the words. Then the AFIIN dictionary is opened from each node's local file system and is stored in a python dictionary and the word is considered as key and the score is considered as the value. In the next step the list of words is iterated in a for loop and checks in the case that each word exists in the dictionary the score is added to the variable holding the scores and the counter is incremented by 1. after all the words in the comment evaluated, the sum of the score is divided by the counter and the overall sentiment analysis of the review is calculated. The date is returned as the key and the score is returned as the value. 
+
+I the reducer, as we saw in other algorithms, the scores are stored as a python list and the average score is calculated by dividing the sum for all the scores by the number of them. The reducer returns the data as the key and the resulted average as the value. You can see the mapper function in code~\ref{lst:non-trivial} 
+
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={A simple tokenization algorithm in Python}, label={lst:tokenizer}, mathescape = true, breaklines=true]
+
+  import pandas as pd
+def striper(word):
+    temp = ""
+    for letter in word :
+        if str(letter).isalpha():
+            temp=temp+str(letter)
+    return temp
+
+words = {}
+with open('test.txt') as s:
+    f = s.readline()
+f = f.split(" ")
+for word in f:
+    sword=striper(word)
+    if sword in words:
+        words[sword]+=1
+    else:
+        words[sword] = 1
+for key in words:
+    print(key, "-> ", words[key]
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={Sentiment analysis non-trivial algorithm}, label={lst:non-trivial}, mathescape = true, breaklines=true]
+
+def mapper(self, _, line):
+        r = {}
+        counter = 0
+        score = 0
+        resourceList = []
+        with open("/home/ubuntu/AFINN-111.txt", 'r') as f:
+            data = csv.reader(f,delimiter='\t')
+            resourceList= list(data)
+        for l in resourceList:
+            r[l[0]]=float(l[1])
+        wordDic={}
+        line = line.strip() 
+        lineList = line.split("\t")
+        country = lineList[13]
+        date = lineList[14]
+        date = date[0:7]
+        cleanText = re.sub(r"[0-9(-_:;,.!?@#%^&*)']",'',country.lower())
+        textList = cleanText.split(" ")
+        t = country.lower()
+        textList = t.split(" ")
+        for i in textList:
+            if i in r.keys():
+                if i in wordDic.keys():
+                    wordDic[i]+=r[i]
+                    counter+=1
+                    score +=r[i]
+                else:
+                    counter+=1
+                    wordDic[i]=r[i]
+                    score+=r[i]
+        if score != 0:
+            out=score/counter
+        else:
+            out = score
+        yield  date, out
+
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+\subsection{Spark RDD algorithms}
+As a matter of fact, Spark is extensively more flexible than Hadoop and prepares the developer with plenty of choices which makes implementing different types of algorithms pretty easy and effective. Spark data frame is one of the tools that makes a considerable donation on facilitating the job for the developer.It prepares a data frame structure close to python Pandas which gives a very detailed abstract view of the data-set to the developer. Spark SQL is also a structured data processing Spark module. It offers DataFrames as a programming abstraction and may also serve as a distributed SQL query engine. On current Hadoop Hive deployments and data, it enables unmodified Hadoop Hive queries to run up to 100x quicker. It also has a strong connection to the rest of the Spark ecosystem[sparkSQL] \ref{}. 
+The concentration in Spark is on sentiment analysis. the non-trivial algorithm has been implemented using multiple alternative techniques to observe any positive or negative effects in performance. These alternatives has been applied on data cleaning part and calculating the mean value. In the first choice python standard functions and iterations is used and regEx commands is utelized as the second alternative, as discussed in \ref{sec:background}. In calculating the mean value, as the first method python statistics is used and as the second method built in python math functions is applied.  The results can be observed in \ref{sec:performance}. 
+
+In addition to non-trivial sentiment analysis algorithm, textblob which is a python library for performing sentiment analysis is tested and used. the result for sentiment analysis received from textblob polarity analysis is a number ranging from -1 as the most negative to 1 as the most positive score. the procedure of the algorithm is pretty much like the other algorithm with difference that instead of using for loop to analyze the review word by word, the review is assigned to textblob instance and a tuple containing the polarity and the value 1 is returned in as the value as well as the date as the key. The code for the mapper function used in RDD map function is demonstrated in code~\ref{lst:textblob} 
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={Sentiment analysis textblob algorithm spark RDD mapper function }, label={lst:textblob}, mathescape = true, breaklines=true]
+
+def blobber(line): 
+    from textblob import TextBlob 
+    if isinstance(line[0], str)!=True or isinstance(line[1], str)!= True: 
+        return "invalid", (0,0)
+    date = line[1][0:7]
+    cleanText = ''.join(w.lower() for w in line[0] if w.isalpha() or w == " ")
+    b = TextBlob(cleanText) 
+    s = b.sentiment.polarity 
+    return date,(s,1) 
+
 
 \end{lstlisting}
 
