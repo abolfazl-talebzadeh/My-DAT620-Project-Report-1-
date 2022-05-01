@@ -63,70 +63,37 @@ if __name__ == '__main__':
 \rule{200 pt}{0.5 pt} 
 
 \subsection{Number of Reviews for Each Month}
-This algorithm includes two mapper functions and two reducer functions. At the top of everything in the class    a function named steps has defined. This takes care of the order of running multiple mappers and reducers.
+A mapper functions and reducer functions are included in this algorithm. The mapper function receives the read line as an argument and removes the extra spaces from the head and the tail of the string and divides in into 15 values representing multiple fields. then position 0 to position 7 of the review date fields which contains year and month of the date is returned as the key and a single "1" as the number to be aggregated by the reducer later.
 
-The first mapper function which is called "mapper\_count", receives the line as a single consistent piece of strings containing 15 values which has been put together using tab character. At the next step the excess spaces at the beginning and the end of the string will be removed using strip function. Then it is divided into 15 parts which represent the values for each field and is stored in a list. In this mapper function, to avoid receiving the header as a line of values, the value is compared to "review\_date " and then the values from the first position to position number seven of the original non-separated value (to have year and month together e.g., 2002-12 for December of 2002) for date will be returned as the key and "1" as the value. if it was equal to the corresponding header title, value null and 0 will be returned.
-
-In the first reducer function, the key which is the truncated date remains untouched and gets returned and the summation of the list of "1"s also is returned to the next mapper as the value.
-
-In the Second mapper function, the received key is divided by the dividing factor "-". and the first element which is the year will be returned as the key and the value which is the total number of reviews for that month of the year will be returned as the value. In the last reducer, the value of year is returned as the key and the values for each month is stored in a list and the maximum value and the position of the maximum value will be returned as the hottest and the year and the minimum value and the position of the minimum value in the list will be returned as the coldest.In code~\ref{lst:reviewsPerMonth} you can find the corresponding code for this algorithm.
+in the reducer, the list of values is aggregated by sum function and get returned with untouched key. you can see the code for implementation of this algorithm at code~r\ref{lst:reviewMonth}
 
 \rule{200 pt}{0.5 pt} 
 
 \renewcommand{\lstlistingname}{Code}
 \lstset{style=mystyle}
-\begin{lstlisting}[language=Python, caption={Number of Reviews for Each Month}, label={lst:reviewsPerMonth}, mathescape = true, breaklines=true]
+\begin{lstlisting}[language=Python, caption={Number of Reviews for each month}, label={lst:reviewMonth}, mathescape = true, breaklines=true]
 
 from mrjob.job import MRJob
-from mrjob.step import MRStep
 
-class MRCountSumAvg(MRJob):
-    def steps(self):
-        return [
-            MRStep(mapper=self.mapper_count,
-                   combiner=self.combiner_count,
-                   reducer=self.reducer_count),
-            MRStep(mapper=self.mapper_avg,
-                   reducer=self.reducer_avg)
-            ]
+class MRCountSum(MRJob):
 
-    def mapper_count(self, _, line):
+    def mapper(self, _, line):
         line = line.strip()  
         lineList = line.split("\t")
-        date = lineList[14]
-       # dataList = date.split("-")
-        if date.strip() !="review_date":#len(date)==10:
-            yield date[:7],1
-        yield "", 0
-
-    def combiner_count(self, key, values):
+        productTitle = lineList[5].strip()
+        yield productTitle, 1
+    def combiner(self, key, values):
         yield key, sum(values)
         
-    def reducer_count(self, key, values):
+    def reducer(self, key, values):
         yield key, sum(values)
-        
-    def mapper_avg(self, key, value):
-        sdate = key.split("-")
-        yield sdate[0], value
-
-    def reducer_avg(self, key, values):
-        values_list = list(values)
-        if len(values_list)<1:
-            yield "No values", 0
-        maxOut = "Hotest month on "+str(key)
-        minOut = "Coldest month on "+str(key)
-        minList = [values_list.index(min(values_list))+1,min(values_list)]
-        maxList = [values_list.index(max(values_list))+1,max(values_list)]
-        yield maxOut, maxList
-        yield minOut, minList
 
 if __name__ == '__main__':
-    MRCountSumAvg.run()
+    MRCountSum.run()
 
 \end{lstlisting}
 
 \rule{200 pt}{0.5 pt} 
-
 
 \subsection{Number of Reviews for Each Product}
 The reason for developing this algorithm has already been stated in \ref{sec:background}, therefore we'll move on to the implementation and algorithm in this section. One mapper function and one reducer function were used to implement this technique. Each line is received by the mapper function through the line parameter. After that, the line will be broken down into 15 fields and kept in a list. The product identification number is retrieved from the list, saved in a variable, and returned to the reducer as the key, with the value "1" as the value. The unique values for each product ID are received in the reducer, and the total of the number of "1" values is computed before returning to the output with the key. In code~\ref{lst:reviewsProduct} you can find the corresponding code for this algorithm.
@@ -222,3 +189,131 @@ if __name__ == '__main__':
 
 \rule{200 pt}{0.5 pt} 
 
+\subsubsection{The Months of Each Year with the Most and the Least Reviews}
+This algorithm includes two mapper functions and two reducer functions. At the top of everything in the class    a function named steps has defined. This takes care of the order of running multiple mappers and reducers.
+
+The first mapper function which is called "mapper\_count", receives the line as a single consistent piece of strings containing 15 values which has been put together using tab character. At the next step the excess spaces at the beginning and the end of the string will be removed using strip function. Then it is divided into 15 parts which represent the values for each field and is stored in a list. In this mapper function, to avoid receiving the header as a line of values, the value is compared to "review\_date " and then the values from the first position to position number seven of the original non-separated value (to have year and month together e.g., 2002-12 for December of 2002) for date will be returned as the key and "1" as the value. if it was equal to the corresponding header title, value null and 0 will be returned.
+
+In the first reducer function, the key which is the truncated date remains untouched and gets returned and the summation of the list of "1"s also is returned to the next mapper as the value.
+
+In the Second mapper function, the received key is divided by the dividing factor "-". and the first element which is the year will be returned as the key and the value which is the total number of reviews for that month of the year will be returned as the value. In the last reducer, the value of year is returned as the key and the values for each month is stored in a list and the maximum value and the position of the maximum value will be returned as the hottest and the year and the minimum value and the position of the minimum value in the list will be returned as the coldest.In code~\ref{lst:reviewsPerMonth} you can find the corresponding code for this algorithm.
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={Number of Reviews for Each Month}, label={lst:reviewsPerMonth}, mathescape = true, breaklines=true]
+
+from mrjob.job import MRJob
+from mrjob.step import MRStep
+
+class MRCountSumAvg(MRJob):
+    def steps(self):
+        return [
+            MRStep(mapper=self.mapper_count,
+                   combiner=self.combiner_count,
+                   reducer=self.reducer_count),
+            MRStep(mapper=self.mapper_avg,
+                   reducer=self.reducer_avg)
+            ]
+
+    def mapper_count(self, _, line):
+        line = line.strip()  
+        lineList = line.split("\t")
+        date = lineList[14]
+       # dataList = date.split("-")
+        if date.strip() !="review_date":#len(date)==10:
+            yield date[:7],1
+        yield "", 0
+
+    def combiner_count(self, key, values):
+        yield key, sum(values)
+        
+    def reducer_count(self, key, values):
+        yield key, sum(values)
+        
+    def mapper_avg(self, key, value):
+        sdate = key.split("-")
+        yield sdate[0], value
+
+    def reducer_avg(self, key, values):
+        values_list = list(values)
+        if len(values_list)<1:
+            yield "No values", 0
+        maxOut = "Hotest month on "+str(key)
+        minOut = "Coldest month on "+str(key)
+        minList = [values_list.index(min(values_list))+1,min(values_list)]
+        maxList = [values_list.index(max(values_list))+1,max(values_list)]
+        yield maxOut, maxList
+        yield minOut, minList
+
+if __name__ == '__main__':
+    MRCountSumAvg.run()
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+
+\subsection{The average starts given to each product by the reviewers}
+
+This algorithm is also consisted of two mappers and two reducers. in the first mapper like the other ones, the read line in plugged into the function using an argument which is referred to by "line" in the function. after receiving the string the spaces at the head and tail drops and it gets divided into field values. The field which holds the value for star ratings and also the value of title of the product is fetch from the list and stored in variables. After that, a list of this two values get returned as the key and number "1" is returned as the value representing the quantity of the combination. The  code for the first mapper can be found in code~\ref{lst:starMap1}
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={The average starts given to each product by the reviewers, first mapper function}, label={lst:starMap1}, mathescape = true, breaklines=true]
+
+ def mapper_count(self, _, line):
+        line = line.strip() 
+        lineList = line.split("\t")
+        star = lineList[7]
+        productTitle = lineList[5].strip()
+        outputList = [productTitle,star]
+        yield outputList,1
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+In the first reducer the key alongside of the summation of the values gets returned.The second mapper gets the key and the value and on the condition that the second element of key list is a numerical type (to make sure it carries the right value and the code doesn't return error) the first element of the key which is the product title is returned as the key and a list made by the second element of the former key which is star rating and the aggregated value which is received from reducer is returned as the value. you can see the code for the second mapper function in code~\ref{lst:starMap2}.
+
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={The average starts given to each product by the reviewers, second mapper}, label={lst:starMap2}, mathescape = true, breaklines=true]
+
+  def mapper_avg(self, key, value):
+        if str(key[1]).isnumeric()== True:
+            yield key[0], [int(key[1]),value]
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+
+
+At the final stage, the collected lists of star ratings and numbers are gathered in a list (consists a list of list). Then, using an iteration on all elements of this list the average of the stars given to each product is calculated and is returned as value with key of the title of the product. You can see the code for the algorithm in code~\ref{lst:starRed2}
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={The average starts given to each product by the reviewers, second reducer}, label={lst:starRed2}, mathescape = true, breaklines=true]
+
+  def reducer_avg(self, key, values):
+        values_list = list(values)
+        tempStar = 0
+        tempNumber = 0
+        for i in values_list:
+            tempStar+=i[0]
+            tempNumber+=i[1]
+        yield key, tempStar/tempNumber
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
