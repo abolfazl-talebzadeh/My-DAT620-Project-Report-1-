@@ -21,21 +21,3 @@ The virtual network of the experimental setup is consisted of two networks. Firs
     \caption{Experimental Secondary Network Topology}
     \label{fig:topology}
 \end{figure}
-
-
-\begin{figure}
-\begin{tikzpicture}
-\begin{axis}[
-    xlabel=YEAR,
-    ylabel=Number of Reviews,
-    legend entries={Maximum, Minimum, Average},
-]
-%The mockup experiment data is stored in a csv file, and imported here.
-\addplot table [x=YEAR, y=MAX, col sep=comma] {data/reviews_month.csv};
-\addplot table [x=YEAR, y=MIN, col sep=comma] {data/reviews_month.csv};
-\addplot table [x=YEAR, y=AVERAGE, col sep=comma] {data/reviews_month.csv};
-\end{axis}
-\end{tikzpicture}
-\caption{A graph showing latency and throughput of a baseline and optimized implementation. The axes show latency in milliseconds, and throughput in thousand operations per second. Data is made up.}
-\label{fig:graph}
-\end{figure}

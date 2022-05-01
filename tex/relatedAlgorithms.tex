@@ -413,8 +413,11 @@ def mapper(self, _, line):
 
 
 \subsection{Spark RDD algorithms}
-As a matter of fact, Spark is extensively more flexible than Hadoop and prepares the developer with plenty of choices which makes implementing different types of algorithms pretty easy and effective. Spark data frame is one of the tools that makes a considerable donation on facilitating the job for the developer.It prepares a data frame structure close to python Pandas which gives a very detailed abstract view of the data-set to the developer. Spark SQL is also a structured data processing Spark module. It offers DataFrames as a programming abstraction and may also serve as a distributed SQL query engine. On current Hadoop Hive deployments and data, it enables unmodified Hadoop Hive queries to run up to 100x quicker. It also has a strong connection to the rest of the Spark ecosystem[sparkSQL] \ref{}. 
-The concentration in Spark is on sentiment analysis. the non-trivial algorithm has been implemented using multiple alternative techniques to observe any positive or negative effects in performance. These alternatives has been applied on data cleaning part and calculating the mean value. In the first choice python standard functions and iterations is used and regEx commands is utelized as the second alternative, as discussed in \ref{sec:background}. In calculating the mean value, as the first method python statistics is used and as the second method built in python math functions is applied.  The results can be observed in \ref{sec:performance}. 
+As a matter of fact, Spark is extensively more flexible than Hadoop and prepares the developer with plenty of choices which makes implementing different types of algorithms pretty easy and effective. Spark data frame is one of the tools that makes a considerable donation on facilitating the job for the developer.It prepares a data frame structure close to python Pandas which gives a very detailed abstract view of the data-set to the developer. Spark SQL is also a structured data processing Spark module. It offers DataFrames as a programming abstraction and may also serve as a distributed SQL query engine. On current Hadoop Hive deployments and data, it enables unmodified Hadoop Hive queries to run up to 100x quicker. It also has a strong connection to the rest of the Spark ecosystem \cite{databricks_what_nodate}. 
+The concentration in Spark is on sentiment analysis. the non-trivial algorithm has been implemented using multiple alternative techniques to observe any positive or negative effects in performance. These alternatives has been applied on data cleaning part and calculating the mean value. In the first choice python standard functions and iterations is used and regEx commands is utilized as the second alternative, as discussed in \ref{sec:background}. In calculating the mean value, as the first method python statistics is used and as the second method built in python math functions is applied.  The results can be observed in chapter \ref{sec:performance}. 
+
+In Spark implementing sentiment analysis is pretty much like Hadoop with some minor differences like in mapper the date is return as key as did in Hadoop but as far as calculating mean in spark is not as easy as hadoop for the reason that in reducer the values do not get collected as a list of values so it is not possible to count the number of the values which are returned by the mapper function, instead a tuple containing the sentiment analysis polarity value and a value "1" is returned as the value by in the mapper and the reducer function takes the key which contains the date will be returned untouched and the value containing two values and goes for two results, the first item which is sentiment analysis result get added and composes a tuple with the addition of the second part of two received values and  places at the second part of the tuple. in code~\ref{lst:mrSpark} you can see how mapper and reducer works. It should also be mentioned that, the mapper function is the same with other sentiment analysis, so to save space it is not mentioned in the code.
+
 
 In addition to non-trivial sentiment analysis algorithm, textblob which is a python library for performing sentiment analysis is tested and used. the result for sentiment analysis received from textblob polarity analysis is a number ranging from -1 as the most negative to 1 as the most positive score. the procedure of the algorithm is pretty much like the other algorithm with difference that instead of using for loop to analyze the review word by word, the review is assigned to textblob instance and a tuple containing the polarity and the value 1 is returned in as the value as well as the date as the key. The code for the mapper function used in RDD map function is demonstrated in code~\ref{lst:textblob} 
 
@@ -438,3 +441,29 @@ def blobber(line):
 \end{lstlisting}
 
 \rule{200 pt}{0.5 pt}
+
+
+
+
+
+
+
+\rule{200 pt}{0.5 pt} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{style=mystyle}
+\begin{lstlisting}[language=Python, caption={Spark mapper and reducer on RDD}, label={lst:mrSpark}, mathescape = true, breaklines=true]
+
+def m(x):
+    if x[1][1]<1:
+        return x[0],0
+    return x[0],x[1][0]/x[1][1] 
+
+a = dataRdd.map(mapper).reduceByKey(lambda e1,e2: (e1[0]+e2[0],e1[1]+e2[1])).map(m)
+a.collect()
+
+
+\end{lstlisting}
+
+\rule{200 pt}{0.5 pt}
+

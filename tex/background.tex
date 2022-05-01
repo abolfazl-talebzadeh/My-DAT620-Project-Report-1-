@@ -18,7 +18,7 @@ The selected data-set is more than 130 million Amazon customers reviews on rough
 \end{itemize}
 
 \subsection{BUSINESS INTELLIGENCE}
-To extract the proper BI strategies and analysis of the existing data, several queries has been implemented using MrJob in Hadoop and Spark. Below you can see a brief explanation for each procedure. We will go through the detail in other sections.
+Using business strategies which retrieved from the data prepared by the business can give a right feedback to the managers of the company to make vital decisions which can disrupt the business. To extract the proper BI strategies and analysis of the existing data, several queries has been implemented using MrJob in Hadoop and Spark. After fetching results from raw data they can decode the secrets concealed in the data by visualizing it in the proper way in \ref{fig:graph} you can see a simple visualization of one of the implementations. Below you can see a brief explanation for each implementation. We will go through the detail in other sections.
 
 \subsubsection{Number of Reviews Each Year}
 
@@ -48,10 +48,27 @@ For example, data is mined for trends in business analytic to better understand 
 Sentiment analysis integrates multiple research fields such as natural language processing, data mining, and text mining, and is quickly gaining traction between many businesses as they pursue to integrate computational intelligence methods into their operations and shed more light on, and improve, their products and services. The purpose of sentiment analysis, often known as opinion mining, is to uncover people's written views. "What one feels about something," "personal experience, one's own emotion," "an attitude toward something," or "an opinion" all seem to be terms used to describe sentiment.
 
 Beliefs are at the heart of essentially all human behavior and have a significant role in shaping our actions. Our views and interpretations, as well as the decisions we make, are heavily influenced by how society sees and interpret the world. As a result, when we need to make a decision, we frequently follow the opinion of others.
-This is true not just for people but also for businesses. Closed-form client satisfaction surveys have traditionally been enough to determine the most important components, or features, of total customer satisfaction. Questionnaire development and implementation, on the other hand, might be costly or unavailable. In certain circumstances, governmental entities are even forbidden by law from collecting customer satisfaction surveys.
+This is true not just for people but also for businesses. Closed-form client satisfaction surveys have traditionally been enough to determine the most important components, or features, of total customer satisfaction. Questionnaire development and implementation, on the other hand, might be costly or unavailable. In certain circumstances, governmental entities are even forbidden by law from collecting customer satisfaction surveys\cite{fundamentals_2016}.
 
 Therefore, we decided to use sentiment analysis to attain an insight of reviewers’ behavioral pattern during particular periods of time to figure out how some iconic events which are considered a milestone socially or politically (e.g., US presidential election, September 11, Superbowl matches, most important shooting outs and terrorist attacks) affect their behavior in business platforms like amazon. Sentiment analysis can also be used in multiple applying other business policies. For example, the general impact of the customers on a product line after a determined period of time can be learnt through implementing sentiment analysis on the user reviews on multiple platforms and also social media like twitter and Instagram and even deeper on reviewers’ videos in online video sharing platforms like YouTube. This can be used to decide how to do the product modification to convert a not successful product to a best sellers or which policies to pursue for a good selling product to go even further. 
 
 \subsection{PERFORMANCE ASSESSMENT}
-As far as two data frameworks for handling big data (i.e., Apache Hadoop and Spark) has been chosen to implement all formerly mentioned algorithms. There’s also a good chance to do some comparisons on performance assessment of these two frameworks on different algorithms considering the fact that they use slightly different approaches to solve the big data computation problem. For achieving this, sentiment analysis will be implemented on both Hadoop and Spark using multiple algorithms and methods on different cluster settings to get an insight on which has the best performance and to choose the proper algorithm and method to do the sentiment analysis on a big data with specifications the same of ours.
+As far as two data frameworks for handling big data (i.e., Apache Hadoop and Spark) has been chosen to implement all formerly mentioned algorithms. There’s also a good chance to do some comparisons on performance assessment of these two frameworks on different algorithms considering the fact that they use slightly different approaches to solve the big data computation problem. For achieving this, sentiment analysis will be implemented on both Hadoop and Spark using multiple algorithms and methods on different cluster settings to get an insight on which has the best performance and to choose the proper algorithm and method to do the sentiment analysis on a big data with specifications the same of ours
 
+
+\begin{figure}
+\begin{tikzpicture}
+\begin{axis}[
+    xlabel=YEAR,
+    ylabel=Number of Reviews,
+    legend entries={Maximum, Minimum, Average},
+]
+%The mockup experiment data is stored in a csv file, and imported here.
+\addplot table [x=YEAR, y=MAX, col sep=comma] {data/reviews_month.csv};
+\addplot table [x=YEAR, y=MIN, col sep=comma] {data/reviews_month.csv};
+\addplot table [x=YEAR, y=AVERAGE, col sep=comma] {data/reviews_month.csv};
+\end{axis}
+\end{tikzpicture}
+\caption{Comparison of maximum, minimum and average number of reviews each year.}
+\label{fig:graph}
+\end{figure}
